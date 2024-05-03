@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SummarizeTube</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index" class="text-white text-2xl font-bold hover:text-gray-300 transition-colors">SummarizeTube</a>
+            <div>
+                <a href="history" class="text-white hover:text-gray-300 transition-colors">History</a>
+                <a href="login" class="text-white ml-4 hover:text-gray-300 transition-colors">Login</a>
+                <a href="signup" class="text-white ml-4 hover:text-gray-300 transition-colors">Signup</a>
+            </div>
+        </div>
+    </nav>  
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-10 px-4 sm:px-0">
+        <div class="max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-md transition transform transform hover:scale-105">
+
+            <section>
+                <h2 class="text-xl mb-4 font-semibold">Summary Detail</h2>
+                <div class="border border-gray-300 bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold">{{summary_detail.youtube_title}}</h3>
+                    <p class="text-gray-700">{{summary_detail.generated_content}}</p>
+                    <hr class="my-4 border-gray-300">
+                    <h4 class="text-lg font-semibold">Youtube Title</h4>
+                    <p class="text-gray-700">{{summary_detail.youtube_title}}</p>
+                    <h4 class="text-lg font-semibold">Youtube Link</h4>
+                    <a href="{{summary_detail.youtube_link}}" class="text-blue-600 hover:underline">{{blog_article_detail.youtube_link}}</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="text-center p-4 text-black mt-6">
+        Powered by Dang Hung Do
+    </footer>
+</body>
+</html
