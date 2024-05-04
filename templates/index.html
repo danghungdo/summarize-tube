@@ -56,11 +56,16 @@
     <!-- Navbar -->
     <nav class="bg-gray-800 p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="index" class="text-white text-2xl font-bold hover:text-gray-300 transition-colors">SummarizeTube</a>
+            <a href="/" class="text-white text-2xl font-bold hover:text-gray-300 transition-colors">SummarizeTube</a>
             <div>
-                <a href="history" class="text-white hover:text-gray-300 transition-colors">History</a>
-                <a href="login" class="text-white ml-4 hover:text-gray-300 transition-colors">Login</a>
-                <a href="signup" class="text-white ml-4 hover:text-gray-300 transition-colors">Signup</a>
+                {% if user.is_authenticated %}
+                    <a href="#" class="text-white hover:text-gray-300 transition-colors">Welcome, {{ user.username }}</a>
+                    <a href="history" class="text-white hover:text-gray-300 transition-colors">History</a>
+                    <a href="logout" class="text-white ml-4 hover:text-gray-300 transition-colors">Logout</a>
+                {% else %}
+                    <a href="login" class="text-white ml-4 hover:text-gray-300 transition-colors">Login</a>
+                    <a href="signup" class="text-white ml-4 hover:text-gray-300 transition-colors">Signup</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -83,20 +88,20 @@
                     <button id="summarize" class="bg-gray-700 text-white px-4 py-2 rounded-r-md hover:bg-gray-800 transition-colors">Summarize</button>
                 </div>
             </div>
-            
             <br>
-
             <!-- Loading circle -->
-            <div id="loading">
-                <div class="flex justify-center items-center">
-                    <div class="loader">
-                </div>
+            <div id="loading" style="display: none;" class="flex justify-center items-center">
+                <div class="loader"></div>
             </div>
             
             <section class="mt-10 flex-grow">
-                <h2 class="text-xl mb-4 font-semibold">Summary</h2>
-                <div id="blogContent" class="mt-2 text-gray-700 space-y-4">
+                <h2 id="summary_title" class="text-xl mb-4 font-semibold" style="display: none">Summary</h2>
+                <div id="summary" class="mt-2 space-y-4">
                 </div>
+                <div id="alert" class="text-sm italic"></div>
+            </section>
+        </div> 
+    </div>
             </section>
    
         </div> 
@@ -105,5 +110,46 @@
     <footer class="text-center p-4 text-black mt-6">
         Powered by Dang Hung Do
     </footer>
+
+    <script>
+        document.getElementById('summarize').addEventListener('click', async () => {
+            const youtubeURL = document.getElementById('youtubeURL').value;
+            const summary = document.getElementById('summary');
+            const alert = document.getElementById('alert');
+            if (youtubeURL) {
+                document.getElementById('summary_title').style.display = 'none';
+                document.getElementById('loading').style.display = 'block';
+                summary.innerHTML = '';
+                alert.innerHTML = '';
+
+                const endpointURL = '/summarize';
+
+                try {
+                    const response = await fetch(endpointURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({video_url: youtubeURL})
+                    });
+
+                    const data = await response.json();
+                    summary.innerHTML = data.summary;
+                } catch (error) {
+                    console.error('Error occured:', error);
+                    alert('Error occured. Please try again later.');
+                }
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('summary_title').style.display = 'block';
+
+                if ("{{ user.is_authenticated }}" == "False") {
+                    alert.innerHTML = 'Login to save the summary!';
+                } else {
+                    alert.innerHTML = '';
+                }
+            } else {
+                alert('Please enter a valid Youtube URL.')};
+        });
+    </script>
 </body>
 </html>
